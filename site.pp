@@ -41,5 +41,5 @@ node default {
   #   class { 'my_class': }
   notify { "Hello ${fqdn}": }
   notify { "Im in ur site.pp, editin ur codez": }
+  notice("$::clientcert) has no node definition.")
 }
-

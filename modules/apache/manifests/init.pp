@@ -48,7 +48,7 @@ class apache {
   }
 
   file { '/var/www/html/index.html':
-    ensure => 'file',
-    source => 'puppet:///modules/apache/index.html',
+    ensure  => 'file',
+    content => template('apache/index.html.erb')
   }
 }
