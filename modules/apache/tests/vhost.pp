@@ -1,1 +1,4 @@
-include apache::vhost
+include apache
+apache::vhost { "justinshost.puppetlabs.vm":
+  dowowner => 'root',  
+}

@@ -3,9 +3,16 @@
     <h1>
       Hello, World!
     </h1>
+    <h2>
+      Welcome to <%= @hostname %>!
+    </h2>
+
+    <% if @docroot -%>
     <p>
-      Welcome to my webserver!
+      Docroot is: <%= @docroot %>
     </p>
+    <% end -%>
+
     <p>
       Server OS family: <%= @osfamily %>
       Server uptime (seconds): <%= @uptime_seconds %>

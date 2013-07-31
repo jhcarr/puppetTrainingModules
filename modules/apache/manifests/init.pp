@@ -1,33 +1,27 @@
 class apache {
 
-  apache::vhost { 'elmo.puppetlabs.net':
-    port    => '80',
-    docroot => '/var/www/muppets/elmo',
-    options => 'Indexes Multiviews',
-    notify  => Service[$httpd_svc],
-  }
-
   case $::osfamily {
     'RedHat': {
-      $httpd_user  = 'apache'
-      $httpd_group = 'apache'
-      $httpd_pkg   = 'httpd'
-      $httpd_svc   = 'httpd'
-      $httpd_conf  = '/etc/httpd/conf/httpd.conf'
+      $httpd_user       = 'apache'
+      $httpd_group      = 'apache'
+      $httpd_pkg        = 'httpd'
+      $httpd_svc        = 'httpd'
+      $httpd_conf       = '/etc/httpd/conf/httpd.conf'
+      $httpd_conf_dot_d = '/etc/httpd/conf.d'
     }
     'Debian': {
-      $httpd_user  = 'www-data'
-      $httpd_group = 'www-data'
-      $httpd_pkg   = 'apache2'
-      $httpd_svc   = 'apache2'
-      $httpd_conf  = '/etc/apache2/httpd.conf'
+      $httpd_user       = 'www-data'
+      $httpd_group      = 'www-data'
+      $httpd_pkg        = 'apache2'
+      $httpd_svc        = 'apache2'
+      $httpd_conf       = '/etc/apache2/httpd.conf'
+      $httpd_conf_dot_d = '/etc/apache2/conf.d'
     }
     default: {
       fail("Module ${module_name} is not supported on ${::osfamily}")
     }
   }
 
-  
   File {
     owner => $httpd_user,
     group => $httpd_group,
@@ -39,15 +33,17 @@ class apache {
   }
 
   service { $httpd_svc:
-    ensure  => 'running',
+    ensure    => 'running',
+    require   => Package[$httpd_pkg],
+    subscribe => File[$httpd_conf],
   }
 
-  file { '/etc/httpd/conf/httpd.conf':
+  file { $httpd_conf:
     ensure  => file,
     owner   => 'root',
     group   => 'root',
     require => Package[$httpd_pkg],
-    notify  => Service[$httpd_svc],
+    source  => 'puppet:///modules/apache/httpd.conf',
   }
   
   file { [ '/var/www/', '/var/www/html' ]:
