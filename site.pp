@@ -40,5 +40,6 @@ node default {
   # Example:
   #   class { 'my_class': }
   notify { "Hello ${fqdn}": }
+  notify { "Im in ur site.pp, editin ur codez": }
 }
 
