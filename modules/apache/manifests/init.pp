@@ -1,18 +1,23 @@
 class apache {
 
+  File {
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
+  }
+    
   package { 'httpd':
     ensure => present,
   }
 
   service { 'httpd':
-    ensure  => 'running',    
+    ensure  => 'running',
   }
 
   file { '/etc/httpd/conf/httpd.conf':
     ensure  => file,
     owner   => 'root',
     group   => 'root',
-    #source  => 'puppet:///modules/apache/httpd.conf',
     require => Package['httpd'],
     notify  => Service['httpd'],
   }
