@@ -1,5 +1,12 @@
 class apache {
 
+  apache::vhost { 'elmo.puppetlabs.net':
+    port    => '80',
+    docroot => '/var/www/muppets/elmo',
+    options => 'Indexes Multiviews',
+    notify  => Service[$httpd_svc],
+  }
+
   case $::osfamily {
     'RedHat': {
       $httpd_user  = 'apache'
