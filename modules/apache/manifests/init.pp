@@ -5,8 +5,16 @@ class apache {
   }
 
   service { 'httpd':
-    ensure => 'running',
+    ensure  => 'running',    
+  }
+
+  file { '/etc/httpd/conf/httpd.conf':
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    #source  => 'puppet:///modules/apache/httpd.conf',
     require => Package['httpd'],
+    notify  => Service['httpd'],
   }
   
   file { '/var/www/':
