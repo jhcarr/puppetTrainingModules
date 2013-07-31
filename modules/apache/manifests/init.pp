@@ -6,6 +6,7 @@ class apache {
 
   service { 'httpd':
     ensure => 'running',
+    require => Package['httpd'],
   }
   
   file { '/var/www/':
